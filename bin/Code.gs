@@ -15,9 +15,9 @@ var SCOPE_READ="read";
 var SCOPE_POST="post";
 
 /**
- * Create an Slack API Client 
+ * Create an Slack API Client
  * @param {String} token API Token via https://api.slack.com/tokens
- * @return {SlackApp} return an Slack API Client 
+ * @return {SlackApp} return an Slack API Client
  */
 function create(token){
   return new SlackApp(null, null, null, null, {token : token});
@@ -47,7 +47,7 @@ function create(token){
  *     <td>The suffix name for PropertiesService key. Default : <code>""</code></td>
  *   </tr>
  * </table>
- * @return {SlackApp} return an Slack API Client 
+ * @return {SlackApp} return an Slack API Client
  */
 function createByClientId(team, clientId, clientSecret, scopes, option){
   return new SlackApp(team, clientId, clientSecret, scopes, option);
@@ -119,7 +119,7 @@ function authTest() {
 
 /**
  * This method returns a portion of messages/events from the specified channel. To read the entire history for a channel, call the method with no latest or oldest arguments, and then continue paging using the instructions below.
- * https://api.slack.com/methods/channels.history
+ * https://api.slack.com/methods/conversations.history
  * @param {string} channelId Channel to fetch history for.
  * @param {Object} optParams optional
   * <table class="arguments table table-condensed">
@@ -188,19 +188,19 @@ function channelsHistory(channelId, optParams) {
  *     "channel": {
  *         "id": "C024BE91L",
  *         "name": "fun",
- * 
+ *
  *         "created": "1360782804",
  *         "creator": "U024BE7LH",
- * 
+ *
  *         "is_archived": false,
  *         "is_general": false,
  *         "is_member": true,
- * 
+ *
  *         "members": [ … ],
- * 
+ *
  *         "topic": { … },
  *         "purpose": { … }
- * 
+ *
  *         "last_read": "1401383885.000061",
  *         "latest": { … }
  *         "unread_count": 0,
@@ -216,7 +216,7 @@ function channelsInfo(channelId) {
  * This method is used to invite a user to a channel. The calling user must be a member of the channel.
  * @param {string} channelId Channel to invite user to.
  * @param {string} userId User to invite to channel.
- * @return {Object} api result 
+ * @return {Object} api result
  * <pre><code>
  * {
  *     "ok": true,
@@ -256,49 +256,49 @@ function channelsInvite(channelId, userId) {
  * @return {Object} api result
  *  <pre><code>
  *  {
- *     "ok": true,
- *     "channel": {
- *         "id": "C024BE91L",
- *         "name": "fun",
- *         "created": "1360782804",
- *         "creator": "U024BE7LH",
- *         "is_archived": false,
- *         "is_member": true,
- *         "is_general": false,
- *         "last_read": "1401383885.000061",
- *         "latest": { … }
- *         "unread_count": 0,
- *         "members": [ … ],
- *         "topic": {
- *             "value": "Fun times",
- *             "creator": "U024BE7LV",
- *             "last_set": "1369677212"
- *         },
- *         "purpose": {
- *             "value": "This channel is for fun",
- *             "creator": "U024BE7LH",
- *             "last_set": "1360782804"
- *         }
- *     },
- * }
- *  </code></pre>
- *  If you are already in the channel, the response is slightly different. already_in_channel will be true, and a limited channel object will be returned. This allows a client to see that the request to join GeNERaL is the same as the channel #general that the user is already in:
- *  <pre><code>
- *  {
- *     "ok": true,
- *     "already_in_channel": true,
- *     "channel": {
- *         "id": "C024BE91L",
- *         "name": "fun",
- *         "created": "1360782804",
- *         "creator": "U024BE7LH",
- *         "is_archived": false,
- *         "is_general": false
- *     }
- * }
+ *      "ok": true,
+ *      "channel": {
+ *          "id": "C061EG9SL",
+ *          "name": "general",
+ *          "is_channel": true,
+ *          "is_group": false,
+ *          "is_im": false,
+ *          "created": 1449252889,
+ *          "creator": "U061F7AUR",
+ *          "is_archived": false,
+ *          "is_general": true,
+ *          "unlinked": 0,
+ *          "name_normalized": "general",
+ *          "is_shared": false,
+ *          "is_ext_shared": false,
+ *          "is_org_shared": false,
+ *          "pending_shared": [],
+ *          "is_pending_ext_shared": false,
+ *          "is_member": true,
+ *          "is_private": false,
+ *          "is_mpim": false,
+ *          "topic": {
+ *              "value": "Which widget do you worry about?",
+ *              "creator": "",
+ *              "last_set": 0
+ *          },
+ *          "purpose": {
+ *              "value": "For widget discussion",
+ *              "creator": "",
+ *              "last_set": 0
+ *          },
+ *          "previous_names": []
+ *      },
+ *      "warning": "already_in_channel",
+ *      "response_metadata": {
+ *          "warnings": [
+ *              "already_in_channel"
+ *          ]
+ *      }
+ *  }
  *  </code></pre>
  */
-function channelsJoin(channelName) {
+function channelsJoin(channelId) {
     throw new Error("this method should not call direct, please call create method.")
 }
 
@@ -339,7 +339,7 @@ function channelsLeave(channelId) {
 }
 
 /**
- * This method returns a list of all channels in the team. This includes channels the caller is in, channels they are not currently in, and archived channels. The number of (non-deactivated) members in each channel is also returned.
+ * This method returns a list of all channels in the team. This includes channels the caller is in, channels they are not currently in, and archived conversations. The number of (non-deactivated) members in each channel is also returned.
  * @param {boolean} optIsExecludeArchived optional true/false
  * @return {Object} api result
  * <pre><code>
@@ -382,7 +382,7 @@ function channelsList(optIsExecludeArchived) {
  * <pre><code>
  * {
  *     "ok": true
- * } 
+ * }
  * </code></pre>
  */
 function channelsMark(channelId, timestamp) {
@@ -494,7 +494,7 @@ function groupsCreate(name) {
  * Archives the existing group.
  * Creates a new group with the name of the existing group.
  * Adds all members of the existing group to the new group.
- * This is useful when inviting a new member to an existing group while hiding all previous chat history from them. In this scenario you can call groups.createChild followed by groups.invite.
+ * This is useful when inviting a new member to an existing group while hiding all previous chat history from them. In this scenario you can call conversations.createChild followed by conversations.invite.
  *
  * The new group will have a special parent_group property pointing to the original archived group. This will only be returned for members of both groups, so will not be visible to any newly invited members.
  * @param {string} channelId Group to clone and archive.
@@ -517,7 +517,7 @@ function groupsHistory(channelId, option) {
 /**
  * This method is used to invite a user to a private group. The calling user must be a member of the group.
  *
- * To invite a new member to a group without giving them access to the archives of the group call the groups.createChild method before inviting.
+ * To invite a new member to a group without giving them access to the archives of the group call the conversations.createChild method before inviting.
  * @param {string} channelId Private group to invite user to.
  * @param {string} userId User to invite.
  * @return {Object} api result
@@ -547,7 +547,7 @@ function groupsLeave(channelId) {
 
 /**
  * This method returns a list of groups in the team that the caller is in and archived groups that the caller was in. The list of (non-deactivated) members in each group is also returned.
- * @param {Boolean} optIsExecludeArchived optional true/false Don't return archived groups.
+ * @param {Boolean} optIsExecludeArchived optional true/false Don't return archived conversations.
  * @return {Object} api result
  */
 function groupsList(optIsExecludeArchived) {
@@ -852,39 +852,39 @@ var _this = this,
 
     SlackApp.prototype.channelsHistory = function(channelId, optParams) {
       if (optParams == null) optParams = {};
-      return this.fetch_("channels.history", _.extend({
+      return this.fetch_("conversations.history", _.extend({
         channel: channelId
       }, optParams));
     };
 
     SlackApp.prototype.channelsInvite = function(channelId, userId) {
-      return this.fetch_("channels.invite", {
+      return this.fetch_("conversations.invite", {
         channel: channelId,
         user: userId
       });
     };
 
     SlackApp.prototype.channelsInfo = function(channelId) {
-      return this.fetch_("channels.info", {
+      return this.fetch_("conversations.info", {
         channel: channelId
       });
     };
 
-    SlackApp.prototype.channelsJoin = function(channelName) {
-      return this.fetch_("channels.join", {
-        name: channelName
+    SlackApp.prototype.channelsJoin = function(channelId) {
+      return this.fetch_("conversations.join", {
+        name: channelId
       });
     };
 
     SlackApp.prototype.channelsKick = function(channelId, userId) {
-      return this.fetch_("channels.kick", {
+      return this.fetch_("conversations.kick", {
         channel: channelId,
         user: userId
       });
     };
 
     SlackApp.prototype.channelsLeave = function(channelId) {
-      return this.fetch_("channels.leave", {
+      return this.fetch_("conversations.leave", {
         channel: channelId
       });
     };
@@ -893,28 +893,28 @@ var _this = this,
       var execludeArchived;
       if (optIsExecludeArchived == null) optIsExecludeArchived = false;
       execludeArchived = optIsExecludeArchived ? 1 : 0;
-      return this.fetch_("channels.list", {
+      return this.fetch_("conversations.list", {
         channel: channelId,
         exclude_archived: execludeArchived
       });
     };
 
     SlackApp.prototype.channelsMark = function(channelId, timestamp) {
-      return this.fetch_("channels.mark", {
+      return this.fetch_("conversations.mark", {
         channel: channelId,
         ts: timestamp
       });
     };
 
     SlackApp.prototype.channelsSetPurpose = function(channelId, purpose) {
-      return this.fetch_("channels.setPurpose", {
+      return this.fetch_("conversations.setPurpose", {
         channel: channelId,
         purpose: purpose
       });
     };
 
     SlackApp.prototype.channelsSetTopic = function(channelId, topic) {
-      return this.fetch_("channels.setTopic", {
+      return this.fetch_("conversations.setTopic", {
         channel: channelId,
         topic: topic
       });
@@ -967,40 +967,40 @@ var _this = this,
     };
 
     SlackApp.prototype.groupsCreate = function(name) {
-      return this.fetch_("groups.create", {
+      return this.fetch_("conversations.create", {
         name: name
       });
     };
 
     SlackApp.prototype.groupsCreateChild = function(channelId) {
-      return this.fetch_("groups.createChild", {
+      return this.fetch_("conversations.createChild", {
         channel: channelId
       });
     };
 
     SlackApp.prototype.groupsHistory = function(channelId, option) {
       if (option == null) option = {};
-      return this.fetch_("groups.history", _.extend({
+      return this.fetch_("conversations.history", _.extend({
         channel: channelId
       }, option));
     };
 
     SlackApp.prototype.groupsInvite = function(channelId, userId) {
-      return this.fetch_("groups.invite", {
+      return this.fetch_("conversations.invite", {
         channel: channelId,
         user: userId
       });
     };
 
     SlackApp.prototype.groupsKick = function(channelId, userId) {
-      return this.fetch_("groups.kick", {
+      return this.fetch_("conversations.kick", {
         channel: channelId,
         user: userId
       });
     };
 
     SlackApp.prototype.groupsLeave = function(channelId) {
-      return this.fetch_("groups.leave", {
+      return this.fetch_("conversations.leave", {
         channel: channelId
       });
     };
@@ -1009,27 +1009,27 @@ var _this = this,
       var execludeArchived;
       if (optIsExecludeArchived == null) optIsExecludeArchived = false;
       execludeArchived = optIsExecludeArchived ? 1 : 0;
-      return this.fetch_("groups.list", {
+      return this.fetch_("conversations.list", {
         exclude_archived: execludeArchived
       });
     };
 
     SlackApp.prototype.groupsMark = function(channelId, timestamp) {
-      return this.fetch_("groups.mark", {
+      return this.fetch_("conversations.mark", {
         channel: channelId,
         ts: timestamp
       });
     };
 
     SlackApp.prototype.groupsSetPurpose = function(channelId, purpose) {
-      return this.fetch_("groups.setPurpose", {
+      return this.fetch_("conversations.setPurpose", {
         channel: channelId,
         purpose: purpose
       });
     };
 
     SlackApp.prototype.groupsSetTopic = function(channelId, topic) {
-      return this.fetch_("groups.setTopic", {
+      return this.fetch_("conversations.setTopic", {
         channel: channelId,
         topic: topic
       });
@@ -1037,17 +1037,17 @@ var _this = this,
 
     SlackApp.prototype.imHistory = function(channelId, option) {
       if (option == null) option = {};
-      return this.fetch_("im.history", _.extend({
+      return this.fetch_("conversations.history", _.extend({
         channel: channelId
       }, option));
     };
 
     SlackApp.prototype.imList = function() {
-      return this.fetch_("im.list");
+      return this.fetch_("conversations.list");
     };
 
     SlackApp.prototype.imMark = function(channelId, timestamp) {
-      return this.fetch_("im.mark", {
+      return this.fetch_("conversations.mark", {
         channel: channelId,
         ts: timestamp
       });
